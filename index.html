@@ -15,17 +15,19 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
+            /* Menggunakan 100dvh untuk mengatasi address bar HP */
             height: 100vh;
+            height: 100dvh; 
             width: 100vw;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
+            position: fixed; /* Mencegah layar mantul (bouncing) di iOS */
         }
 
         /* SCREEN 1: GAME TEMBAK BEBAN */
         #game-screen {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -45,16 +47,19 @@
             padding: 10px 20px;
             border-radius: 20px;
             text-align: center;
+            z-index: 10;
         }
 
         .target {
             position: absolute;
             font-size: 40px;
-            cursor: crosshair;
+            cursor: pointer;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
             animation: floatTarget 3s infinite alternate ease-in-out;
             transition: transform 0.1s;
+            z-index: 5;
         }
 
         .target:active {
@@ -68,7 +73,7 @@
 
         /* SCREEN 2: LOADING KOALA JALAN */
         #loading-screen {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -109,7 +114,7 @@
 
         /* SCREEN 3: OVERLAY TYPING */
         #typing-overlay {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -164,6 +169,8 @@
             height: 150px;
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            touch-action: manipulation; /* Mencegah double tap zoom di HP */
             margin-bottom: 20px;
             z-index: 10;
         }
@@ -197,7 +204,7 @@
         }
 
         .message-box {
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.9);
             padding: 15px 25px;
             border-radius: 20px;
             text-align: center;
@@ -212,7 +219,7 @@
         /* MEME STICKERS TENOR */
         .sticker {
             position: absolute;
-            width: 180px;
+            width: 150px;
             pointer-events: none;
             z-index: 5;
             opacity: 0.9;
@@ -220,21 +227,21 @@
 
         .st1 {
             top: 5%;
-            left: 5%;
+            left: 2%;
             transform: rotate(-15deg);
             animation: float1 4s infinite alternate;
         }
 
         .st2 {
             bottom: 10%;
-            right: 5%;
+            right: 2%;
             transform: rotate(10deg);
             animation: float2 3s infinite alternate;
         }
 
         .st3 {
             top: 15%;
-            right: 5%;
+            right: 2%;
             transform: rotate(20deg);
             animation: float1 5s infinite alternate;
         }
@@ -253,7 +260,7 @@
            SCREEN 5: FINAL SURPRISE (BOUQUET & EMOJI FLOOD) 
            ================================================== */
         #final-screen {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -279,32 +286,33 @@
             display: none;
             flex-direction: column;
             align-items: center;
-            z-index: 10; /* Berada di atas emoji hujan */
+            z-index: 10;
         }
 
         .give-flower {
-            font-size: 120px;
+            font-size: 100px;
             animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, floatTarget 3s infinite alternate ease-in-out 1s;
         }
 
         .final-message {
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 0.95);
             padding: 15px 30px;
             border-radius: 25px;
             margin-top: 20px;
             color: #d81159;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
             text-align: center;
             box-shadow: 0 8px 20px rgba(216, 17, 89, 0.3);
             animation: popIn 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            max-width: 80%;
         }
 
         .bg-emoji {
             position: absolute;
             bottom: -50px;
-            pointer-events: none; /* Agar tidak mengganggu klik/tap animasi bunga */
-            z-index: 1; /* Berada di belakang buket bunga */
+            pointer-events: none;
+            z-index: 1;
             animation: flyUp linear forwards;
         }
 
@@ -328,12 +336,10 @@
 
 <body>
 
-    <!-- AUDIO ELEMENT -->
     <audio id="bg-music" loop>
         <source src="helikopter.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- SCREEN 1: GAME TEMBAK BEBAN -->
     <div id="game-screen">
         <div class="game-title">
             <strong>Hempaskan semua beban hari ini! 💢</strong><br>
@@ -341,36 +347,36 @@
         </div>
     </div>
 
-    <!-- SCREEN 2: LOADING KOALA JALAN -->
     <div id="loading-screen">
         <div class="walking-koala">🐨</div>
         <div class="loading-text">Menyiapkan hadiah kecil...</div>
     </div>
 
-    <!-- SCREEN 3: OVERLAY TYPING -->
     <div id="typing-overlay">
         <div id="typing-text"></div>
         <button class="btn-open" id="btn-open" onclick="openMainScreen()">Buka Hadiah 🎁</button>
     </div>
 
-    <!-- SCREEN 4: MAIN SCREEN PUK PUK -->
     <div id="main-screen">
-        <!-- STICKER TENOR -->
         <div class="sticker st1">
-            <div class="tenor-gif-embed" data-postid="21667740" data-share-method="host" data-aspect-ratio="1" data-width="100%"><a href="https://tenor.com/view/iklog-gif-21667740">Iklog Sticker</a>from <a href="https://tenor.com/search/iklog-stickers">Iklog Stickers</a></div>
+            <div class="tenor-gif-embed" data-postid="21667740" data-share-method="host" data-aspect-ratio="1"
+                data-width="100%"><a href="https://tenor.com/view/iklog-gif-21667740">Iklog Sticker</a></div>
         </div>
         <div class="sticker st2">
-            <div class="tenor-gif-embed" data-postid="14725166563590009362" data-share-method="host" data-aspect-ratio="0.903614" data-width="100%"><a href="https://tenor.com/view/line-gif-14725166563590009362">Line GIF</a>from <a href="https://tenor.com/search/line-gifs">Line GIFs</a></div>
+            <div class="tenor-gif-embed" data-postid="14725166563590009362" data-share-method="host"
+                data-aspect-ratio="0.903614" data-width="100%"><a
+                    href="https://tenor.com/view/line-gif-14725166563590009362">Line GIF</a></div>
         </div>
         <div class="sticker st3">
-            <div class="tenor-gif-embed" data-postid="10227670666283113504" data-share-method="host" data-aspect-ratio="1.26396" data-width="100%"><a href="https://tenor.com/view/minnie-mouse-and-mickey-mouse-gif-10227670666283113504">Minnie Mouse And Mickey Mouse GIF</a>from <a href="https://tenor.com/search/minnie+mouse+and+mickey+mouse-gifs">Minnie Mouse And Mickey Mouse GIFs</a></div>
+            <div class="tenor-gif-embed" data-postid="10227670666283113504" data-share-method="host"
+                data-aspect-ratio="1.26396" data-width="100%"><a
+                    href="https://tenor.com/view/minnie-mouse-and-mickey-mouse-gif-10227670666283113504">Minnie Mouse</a></div>
         </div>
         <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
 
-        <h2 style="color: #d81159; margin-bottom: 5px; z-index: 10;">You Survived Today! 🎉</h2>
+        <h2 style="color: #d81159; margin-bottom: 5px; z-index: 10; text-align: center;">You Survived Today! 🎉</h2>
 
-        <!-- Fitur Puk Puk -->
-        <div class="puk-puk-area" id="puk-puk" onpointerdown="pukPuk()">
+        <div class="puk-puk-area" id="puk-puk" onclick="pukPuk()">
             <div class="hand" id="hand">🤚</div>
             <div class="koala-main" id="main-koala">🐨</div>
         </div>
@@ -380,12 +386,11 @@
         </div>
     </div>
 
-    <!-- SCREEN 5: FINAL SURPRISE -->
     <div id="final-screen">
         <div id="countdown-text">3</div>
         <div id="bouquet-container">
             <div class="give-flower">🐨💐</div>
-            <div class="final-message">Special Bouquet buat Kaka Nopi! 💖</div>
+            <div class="final-message">Special Bouquet buat Kaka! ✨</div>
         </div>
     </div>
 
@@ -394,19 +399,27 @@
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         const audioCtx = new AudioContext();
 
-        function playPopSound(pitch = 1400) {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(pitch, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(pitch - 300, audioCtx.currentTime + 0.1);
-            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.1);
+        function playPopSound(pitch = 800) {
+            // Menggunakan TRY-CATCH agar script tidak macet jika HP memblokir audio API
+            try {
+                if (audioCtx.state === 'suspended') {
+                    // Tangkap error promise dari resume jika diblokir browser
+                    audioCtx.resume().catch((err) => console.log("Audio diblokir HP", err)); 
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(pitch, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(pitch - 300, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.1);
+            } catch (e) {
+                console.log("Gagal memutar efek suara (Aman, animasi tetap jalan)");
+            }
         }
 
         // --- GAME LOGIC ---
@@ -420,13 +433,15 @@
                 tgt.className = 'target';
                 tgt.innerText = emojis[Math.floor(Math.random() * emojis.length)];
 
-                let randomX = Math.random() * 80;
+                // Mengurangi margin agar tidak keluar layar di HP kecil
+                let randomX = Math.random() * 70 + 5; 
                 let randomY = Math.random() * 60 + 20;
 
                 tgt.style.left = randomX + 'vw';
                 tgt.style.top = randomY + 'vh';
 
-                tgt.onpointerdown = function () {
+                // Gunakan onclick untuk responsibilitas sempurna di mobile
+                tgt.onclick = function () {
                     playPopSound(1200);
                     this.remove();
                     totalTargets--;
@@ -447,7 +462,7 @@
             setTimeout(() => {
                 document.getElementById('loading-screen').style.display = 'none';
                 startTypingScreen();
-            }, 3000);
+            }, 3500);
         }
 
         // --- TYPING OVERLAY LOGIC ---
@@ -459,8 +474,9 @@
             typingOverlay.style.display = 'flex';
 
             let bgm = document.getElementById('bg-music');
-            bgm.volume = 0.2;
-            bgm.play().catch(e => console.log("Lagu butuh interaksi user dulu di beberapa browser"));
+            bgm.volume = 0.3;
+            // Catch error jika autoplay musik ditolak HP
+            bgm.play().catch(e => console.log("Lagu butuh interaksi user dulu di beberapa HP"));
 
             typeWriter();
         }
@@ -488,7 +504,11 @@
 
         // --- PUK PUK LOGIC ---
         let patCount = 0;
+        let surpriseTriggered = false; // Kunci agar timer tidak double trigger di HP
+
         function pukPuk() {
+            if (surpriseTriggered) return; // Jika sudah tap 10x, hentikan tap berikutnya
+
             playPopSound(900);
             patCount++;
 
@@ -501,13 +521,13 @@
             }, 150);
 
             if (patCount === 1) text.innerText = "Hehehehe ~ 🌸";
-            else if (patCount === 4) text.innerText = "Keren banget hari ini! ✨";
-            else if (patCount === 8) text.innerText = "Enjoy ur timee Kaa ~ 😎";
-            else if (patCount === 10) text.innerText = "Jangan lupa istirahat ya Ka hehehe... 🐾";
-            else if (patCount === 12) {
-                text.innerText = "Eh, tunggu sebentar ada satu kejutan lagi! 🎁";
-                // Delay sebentar agar kalimat terbaca, lalu panggil Final Surprise
-                setTimeout(startFinalSurprise, 1500); 
+            else if (patCount === 3) text.innerText = "Good job for todayy! ✨";
+            else if (patCount === 5) text.innerText = "Enjoy ur timee Kaa ~ 😎";
+            else if (patCount === 8) text.innerText = "Jangan lupa istirahat ya Ka hehehe... 🐾";
+            else if (patCount === 10) {
+                text.innerText = "Eitsss, bentar ada satu lagi! 🐨";
+                surpriseTriggered = true; // Kunci tap
+                setTimeout(startFinalSurprise, 1500);
             }
         }
 
@@ -541,7 +561,7 @@
         }
 
         function startEmojiFlood() {
-            const emojisToFlood = ["🐨", "⭐", "🤣", "🌸", "💖", "💐", "✨", "😆"];
+            const emojisToFlood = ["🐨", "⭐", "🤣", "🌸", "💐", "✨", "😆"];
             const finalScreen = document.getElementById('final-screen');
 
             // Memicu hujan emoji setiap 150ms
@@ -561,11 +581,14 @@
 
                 finalScreen.appendChild(el);
 
-                // Bersihkan elemen dari DOM agar website tidak berat (tetap smooth)
+                // Bersihkan elemen dari DOM agar HP tidak lag
                 el.addEventListener('animationend', () => {
                     el.remove();
                 });
-            }, 150); 
+                
+                // Fallback keamanan jika animasi terhenti (agar memory HP tidak penuh)
+                setTimeout(() => { if (el.parentNode) el.remove(); }, 7000);
+            }, 150);
         }
 
         window.onload = initGame;
